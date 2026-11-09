@@ -1,0 +1,91 @@
+name: Build
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # necesario para crear el Release cuando se sube un tag
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15-intel      # Mac Intel (x86_64)
+            name: macOS-Intel
+          - os: macos-latest        # Mac Apple Silicon (arm64)
+            name: macOS-AppleSilicon
+          - os: windows-latest
+            name: Windows
+    env:
+      ARTIFACT: Inventario-${{ matrix.name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Ejecutar pruebas
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: python -m pytest -q
+
+      - name: Compilar con PyInstaller
+        run: pyinstaller --noconfirm --clean inventory.spec
+
+      # ---------- macOS ----------
+      - name: Firma ad-hoc, prueba de humo y zip (macOS)
+        if: runner.os == 'macOS'
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          codesign --force --deep --sign - dist/Inventario.app
+          dist/Inventario.app/Contents/MacOS/Inventario --selftest
+          ditto -c -k --keepParent dist/Inventario.app "dist/${ARTIFACT}.zip"
+
+      # ---------- Windows ----------
+      - name: Prueba de humo y zip (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          $p = Start-Process -FilePath "dist/Inventario/Inventario.exe" -ArgumentList "--selftest" -Wait -PassThru
+          Get-Content "$env:TEMP/inventario-selftest.txt"
+          if ($p.ExitCode -ne 0) { throw "La prueba de humo falló (código $($p.ExitCode))" }
+          Compress-Archive -Path "dist/Inventario" -DestinationPath "dist/$env:ARTIFACT.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: dist/${{ env.ARTIFACT }}.zip
+          if-no-files-found: error
+          compression-level: 0
+
+  release:
+    name: Publicar Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.zip
+          generate_release_notes: true
