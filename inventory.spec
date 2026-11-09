@@ -26,22 +26,22 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name="Inventario",
+    name="Kikario",
     console=False,            # equivale a --windowed
     argv_emulation=False,
     upx=False,
 )
-coll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name="Inventario")
+coll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name="Kikario")
 
 if sys.platform == "darwin":
     app = BUNDLE(
         coll,
-        name="Inventario.app",
+        name="Kikario.app",
         icon=None,
-        bundle_identifier="com.yisuslinkon.inventario",
+        bundle_identifier="com.yisuslinkon.kikario",
         info_plist={
-            "CFBundleName": "Inventario",
-            "CFBundleDisplayName": "Inventario",
+            "CFBundleName": "Kikario",
+            "CFBundleDisplayName": "Kikario",
             "CFBundleShortVersionString": version,
             "CFBundleVersion": version,
             "NSHighResolutionCapable": True,

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Compila Inventario.app en tu Mac.   Uso:  ./build_mac.sh [--skip-tests]
+# Compila Kikario.app en tu Mac.   Uso:  ./build_mac.sh [--skip-tests]
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -43,17 +43,17 @@ rm -rf build dist
 pyinstaller --noconfirm --clean inventory.spec
 
 # 5) Firma ad-hoc (sin cuenta de desarrollador): evita que macOS marque el bundle como dañado
-codesign --force --deep --sign - dist/Inventario.app || echo "(aviso) no se pudo firmar ad-hoc"
+codesign --force --deep --sign - dist/Kikario.app || echo "(aviso) no se pudo firmar ad-hoc"
 
 # 6) Prueba de humo de la app empaquetada (BD temporal, sin ventana visible)
 echo "==> Prueba de humo de la app empaquetada"
-QT_QPA_PLATFORM=offscreen dist/Inventario.app/Contents/MacOS/Inventario --selftest
+QT_QPA_PLATFORM=offscreen dist/Kikario.app/Contents/MacOS/Kikario --selftest
 
 # 7) Zip para distribuir
-ditto -c -k --keepParent dist/Inventario.app dist/Inventario-macOS.zip
+ditto -c -k --keepParent dist/Kikario.app dist/Kikario-macOS.zip
 
 echo
 echo "Listo:"
-echo "  App:  $(pwd)/dist/Inventario.app"
-echo "  Zip:  $(pwd)/dist/Inventario-macOS.zip"
-echo "Primera vez en este Mac: clic derecho > Abrir (o: xattr -cr dist/Inventario.app)"
+echo "  App:  $(pwd)/dist/Kikario.app"
+echo "  Zip:  $(pwd)/dist/Kikario-macOS.zip"
+echo "Primera vez en este Mac: clic derecho > Abrir (o: xattr -cr dist/Kikario.app)"

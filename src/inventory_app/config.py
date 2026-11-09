@@ -5,10 +5,10 @@ import os
 import sys
 from pathlib import Path
 
-APP_NAME = "Inventario"
+APP_NAME = "Kikario"
 APP_VERSION = "1.0.0"
-DB_FILENAME = "inventario.db"
-ENV_DATA_DIR = "INVENTARIO_DATA_DIR"   # permite usar otra carpeta de datos (p. ej. en desarrollo)
+DB_FILENAME = "kikario.db"
+ENV_DATA_DIR = "KIKARIO_DATA_DIR"   # permite usar otra carpeta de datos (p. ej. en desarrollo)
 
 
 def is_custom_data_dir() -> bool:
@@ -19,10 +19,10 @@ def is_custom_data_dir() -> bool:
 def data_dir() -> Path:
     """Carpeta de datos del usuario según el SO.
 
-    macOS:   ~/Library/Application Support/Inventario
-    Windows: %APPDATA%\\Inventario
+    macOS:   ~/Library/Application Support/Kikario
+    Windows: %APPDATA%\\Kikario
 
-    Si existe la variable de entorno INVENTARIO_DATA_DIR se usa esa carpeta. `run.py` la
+    Si existe la variable de entorno KIKARIO_DATA_DIR se usa esa carpeta. `run.py` la
     define automáticamente (./datos-dev) al ejecutar desde el código fuente, así los datos
     de prueba nunca se mezclan con los de la app instalada.
     """

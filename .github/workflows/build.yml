@@ -23,7 +23,7 @@ jobs:
           - os: windows-latest
             name: Windows
     env:
-      ARTIFACT: Inventario-${{ matrix.name }}
+      ARTIFACT: Kikario-${{ matrix.name }}
     steps:
       - uses: actions/checkout@v4
 
@@ -52,9 +52,9 @@ jobs:
         env:
           QT_QPA_PLATFORM: offscreen
         run: |
-          codesign --force --deep --sign - dist/Inventario.app
-          dist/Inventario.app/Contents/MacOS/Inventario --selftest
-          ditto -c -k --keepParent dist/Inventario.app "dist/${ARTIFACT}.zip"
+          codesign --force --deep --sign - dist/Kikario.app
+          dist/Kikario.app/Contents/MacOS/Kikario --selftest
+          ditto -c -k --keepParent dist/Kikario.app "dist/${ARTIFACT}.zip"
 
       # ---------- Windows ----------
       - name: Prueba de humo y zip (Windows)
@@ -63,10 +63,10 @@ jobs:
         env:
           QT_QPA_PLATFORM: offscreen
         run: |
-          $p = Start-Process -FilePath "dist/Inventario/Inventario.exe" -ArgumentList "--selftest" -Wait -PassThru
-          Get-Content "$env:TEMP/inventario-selftest.txt"
+          $p = Start-Process -FilePath "dist/Kikario/Kikario.exe" -ArgumentList "--selftest" -Wait -PassThru
+          Get-Content "$env:TEMP/kikario-selftest.txt"
           if ($p.ExitCode -ne 0) { throw "La prueba de humo falló (código $($p.ExitCode))" }
-          Compress-Archive -Path "dist/Inventario" -DestinationPath "dist/$env:ARTIFACT.zip"
+          Compress-Archive -Path "dist/Kikario" -DestinationPath "dist/$env:ARTIFACT.zip"
 
       - uses: actions/upload-artifact@v4
         with:

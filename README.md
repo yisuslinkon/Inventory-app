@@ -1,4 +1,6 @@
-# Inventario
+# Kikario
+
+**Kikario** — pensada para llevar el negocio de Kika.
 
 Aplicación de escritorio **100 % offline** para controlar inventario y ventas. Funciona en macOS y Windows.
 Python 3.12 · PySide6 (Qt) · SQLite · QtCharts · PyInstaller.
@@ -59,11 +61,11 @@ interfaz usan Qt en modo `offscreen`.
 
 Resultado en `dist/`:
 
-- `Inventario.app` — la aplicación
-- `Inventario-macOS.zip` — la misma app comprimida para compartirla
+- `Kikario.app` — la aplicación
+- `Kikario-macOS.zip` — la misma app comprimida para compartirla
 
 El script usa `python3.12` (o `PYTHON=/ruta/a/python ./build_mac.sh`), compila para la arquitectura de tu
-Mac, firma "ad-hoc" y ejecuta una prueba de humo de la app ya empaquetada (`Inventario --selftest`, con una
+Mac, firma "ad-hoc" y ejecuta una prueba de humo de la app ya empaquetada (`Kikario --selftest`, con una
 base de datos temporal).
 
 ## 5. Obtener la versión de Windows (GitHub Actions)
@@ -72,7 +74,7 @@ No necesitas una máquina Windows: GitHub la compila por ti.
 
 1. Sube el proyecto a un repositorio de GitHub (puede ser privado):
    ```bash
-   git init && git add . && git commit -m "Inventario"
+   git init && git add . && git commit -m "Kikario"
    git branch -M main
    git remote add origin https://github.com/TU_USUARIO/TU_REPO.git
    git push -u origin main
@@ -84,10 +86,10 @@ No necesitas una máquina Windows: GitHub la compila por ti.
    git push origin v1.0.0
    ```
 4. Cuando termine (unos minutos), entra a la ejecución y descarga en **Artifacts**:
-   - `Inventario-Windows` → contiene `Inventario-Windows.zip` (carpeta con `Inventario.exe`)
-   - `Inventario-macOS-Intel` y `Inventario-macOS-AppleSilicon` → `.app` comprimida
+   - `Kikario-Windows` → contiene `Kikario-Windows.zip` (carpeta con `Kikario.exe`)
+   - `Kikario-macOS-Intel` y `Kikario-macOS-AppleSilicon` → `.app` comprimida
    Con el tag, los mismos zip quedan en la sección **Releases**.
-5. En Windows: descomprime la carpeta completa y ejecuta `Inventario.exe` (no muevas el `.exe` solo).
+5. En Windows: descomprime la carpeta completa y ejecuta `Kikario.exe` (no muevas el `.exe` solo).
 
 El workflow instala dependencias, corre las pruebas, compila con PyInstaller, hace la prueba de humo del
 programa empaquetado y sube los artefactos. Nota: en repositorios privados los minutos de macOS cuentan más
@@ -98,15 +100,15 @@ que los de Windows/Linux; si no necesitas alguna variante de Mac, borra su bloqu
 
 | Sistema | Archivo de la base de datos |
 |---|---|
-| macOS | `~/Library/Application Support/Inventario/inventario.db` |
-| Windows | `%APPDATA%\Inventario\inventario.db` |
+| macOS | `~/Library/Application Support/Kikario/kikario.db` |
+| Windows | `%APPDATA%\Kikario\kikario.db` |
 
 **Desarrollo vs. producción:** `python run.py` (código fuente) guarda en `./datos-dev/` y la ventana dice
 "MODO DESARROLLO", así tus datos de prueba nunca se mezclan con los de la app instalada. La app compilada
-(`Inventario.app` / `Inventario.exe`) siempre usa la carpeta del sistema de la tabla. Para forzar otra
-carpeta: `INVENTARIO_DATA_DIR=/ruta python run.py`. Para empezar de cero en desarrollo, borra `datos-dev/`.
+(`Kikario.app` / `Kikario.exe`) siempre usa la carpeta del sistema de la tabla. Para forzar otra
+carpeta: `KIKARIO_DATA_DIR=/ruta python run.py`. Para empezar de cero en desarrollo, borra `datos-dev/`.
 
-En la misma carpeta se guarda `inventario.log` (errores inesperados). La ruta exacta se muestra en la
+En la misma carpeta se guarda `kikario.log` (errores inesperados). La ruta exacta se muestra en la
 pantalla **Respaldo y ajustes**. Para respaldar: **Exportar base de datos**; para restaurar o pasar los
 datos a otro equipo: **Importar base de datos** (antes de reemplazar se guarda una copia automática).
 
@@ -115,8 +117,8 @@ datos a otro equipo: **Importar base de datos** (antes de reemplazar se guarda u
 Las apps no están firmadas con un certificado de pago, así que el sistema muestra una advertencia la
 primera vez:
 
-- **macOS:** clic derecho sobre `Inventario.app` → **Abrir** → **Abrir**. Si dice que está "dañada" o no
-  la deja abrir, quita la marca de cuarentena con `xattr -cr /ruta/a/Inventario.app` y vuelve a abrirla.
+- **macOS:** clic derecho sobre `Kikario.app` → **Abrir** → **Abrir**. Si dice que está "dañada" o no
+  la deja abrir, quita la marca de cuarentena con `xattr -cr /ruta/a/Kikario.app` y vuelve a abrirla.
   En macOS recientes también puedes ir a **Ajustes del Sistema → Privacidad y seguridad → Abrir de todos
   modos**.
 - **Windows:** en la pantalla azul de SmartScreen pulsa **Más información → Ejecutar de todas formas**.

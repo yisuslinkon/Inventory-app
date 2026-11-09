@@ -92,7 +92,7 @@ class SettingsPage(BasePage):
 
     @guarded
     def on_export(self) -> None:
-        default = f"inventario-{date.today():%Y%m%d}.db"
+        default = f"kikario-{date.today():%Y%m%d}.db"
         path, _ = QFileDialog.getSaveFileName(self, S.DLG_EXPORT_DB, default, S.FILTER_DB)
         if not path:
             return

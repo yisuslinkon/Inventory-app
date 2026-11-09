@@ -27,7 +27,7 @@ def export_backup(db: Database, dest: Path | str) -> None:
 
 
 def validate_backup(src: Path | str) -> int:
-    """Verifica que `src` sea una BD de Inventario válida. Devuelve su user_version."""
+    """Verifica que `src` sea una BD de Kikario válida. Devuelve su user_version."""
     src = Path(src)
     if not src.is_file():
         raise BackupError(S.ERR_BACKUP_INVALID)

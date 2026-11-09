@@ -9,7 +9,7 @@ from PySide6.QtWidgets import QMessageBox, QWidget
 from ... import strings as S
 from ...services.errors import AppError
 
-log = logging.getLogger("inventario")
+log = logging.getLogger("kikario")
 
 
 def show_error(parent: QWidget | None, error: BaseException | str) -> None:

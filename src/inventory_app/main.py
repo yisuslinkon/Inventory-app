@@ -18,7 +18,7 @@ from .ui.widgets.dialogs import show_error
 def _setup_logging() -> None:
     try:
         logging.basicConfig(
-            filename=config.data_dir() / "inventario.log", level=logging.WARNING,
+            filename=config.data_dir() / "kikario.log", level=logging.WARNING,
             format="%(asctime)s %(levelname)s %(name)s: %(message)s", encoding="utf-8")
     except OSError:
         logging.basicConfig(level=logging.WARNING)
@@ -41,7 +41,7 @@ def _setup_locale(app: QApplication) -> list[QTranslator]:
 
 
 def _selftest() -> int:
-    """Prueba de humo para la app empaquetada: `Inventario --selftest`.
+    """Prueba de humo para la app empaquetada: `Kikario --selftest`.
 
     Usa una base de datos temporal (no toca la del usuario), crea un producto y una
     venta, y dibuja todas las páginas. Escribe el resultado en un archivo de texto.
@@ -49,7 +49,7 @@ def _selftest() -> int:
     import tempfile
     from pathlib import Path
 
-    out = Path(tempfile.gettempdir()) / "inventario-selftest.txt"
+    out = Path(tempfile.gettempdir()) / "kikario-selftest.txt"
     try:
         with tempfile.TemporaryDirectory() as tmp:
             ctx = AppContext(Path(tmp) / "selftest.db")
@@ -82,7 +82,7 @@ def main() -> int:
         return _selftest()
 
     def excepthook(exc_type, exc, tb):
-        logging.getLogger("inventario").error("Excepción no controlada", exc_info=(exc_type, exc, tb))
+        logging.getLogger("kikario").error("Excepción no controlada", exc_info=(exc_type, exc, tb))
         show_error(None, exc)
 
     sys.excepthook = excepthook
@@ -90,7 +90,7 @@ def main() -> int:
     try:
         ctx = AppContext(config.db_path())
     except Exception as e:  # noqa: BLE001
-        logging.getLogger("inventario").exception("No se pudo abrir la base de datos")
+        logging.getLogger("kikario").exception("No se pudo abrir la base de datos")
         box = QMessageBox(QMessageBox.Icon.Critical, S.DLG_ERROR_TITLE,
                           S.ERR_DB_OPEN.format(path=config.db_path(), detail=e))
         box.addButton(S.BTN_OK, QMessageBox.ButtonRole.AcceptRole)
